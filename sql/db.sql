@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2019 at 07:50 AM
+-- Generation Time: May 04, 2019 at 08:08 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.3
 
@@ -64,6 +64,13 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`item_id`, `user_id`, `name`, `category`, `added_at`, `item_condition`, `quantity`, `description`, `deliv_method`) VALUES
+('I0016', 'U0001', 'Pancake Kiloan', 'C0005', '2019-05-02 14:03:03', 'Baru', 10, 'Bahan kering pancake kiloan,tinggal campur air dan telor', 'Kurir');
+
+--
 -- Triggers `item`
 --
 DELIMITER $$
@@ -73,6 +80,25 @@ CREATE TRIGGER `tg_item_insert` BEFORE INSERT ON `item` FOR EACH ROW BEGIN
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_image`
+--
+
+CREATE TABLE `item_image` (
+  `user_id` varchar(5) NOT NULL,
+  `item_name` varchar(30) DEFAULT NULL,
+  `image_file` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `item_image`
+--
+
+INSERT INTO `item_image` (`user_id`, `item_name`, `image_file`) VALUES
+('U0001', 'Pancake Kiloan', 'The-perfect-pancake.jpg');
 
 -- --------------------------------------------------------
 
@@ -89,7 +115,18 @@ CREATE TABLE `item_seq` (
 --
 
 INSERT INTO `item_seq` (`id`) VALUES
-(2);
+(2),
+(3),
+(8),
+(9),
+(10),
+(15),
+(16),
+(17),
+(18),
+(19),
+(20),
+(21);
 
 -- --------------------------------------------------------
 
@@ -688,16 +725,21 @@ CREATE TABLE `users` (
   `password` varchar(20) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `loc_prov` varchar(50) DEFAULT NULL,
-  `loc_reg` varchar(50) NOT NULL
+  `loc_reg` varchar(50) NOT NULL,
+  `avatar_image` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `last_name`, `email`, `password`, `phone`, `loc_prov`, `loc_reg`) VALUES
-('U0001', 'Fahreza', 'Hafiz', 'icanhafiz@gmail.com', 'test123', '0', NULL, ''),
-('U0004', 'Reyhan', 'W', 'reyhan@gmail.com', 'test123', '0888', NULL, '');
+INSERT INTO `users` (`user_id`, `name`, `last_name`, `email`, `password`, `phone`, `loc_prov`, `loc_reg`, `avatar_image`) VALUES
+('U0001', 'Fahreza', 'Hafiz', 'icanhafiz@gmail.com', 'test123', '08111161866', NULL, '', ''),
+('U0004', 'Reyhan', 'W', 'reyhan@gmail.com', 'test123', '0888', NULL, '', ''),
+('U0006', 'Zul', 'Kifli', 'kipli@gmail.com', 'test123', '080012345678', NULL, '', ''),
+('U0007', 'Alfian', 'Hamam', 'alfianhamam@gmail', 'test123', '084598765432', NULL, '', ''),
+('U0010', 'Amin', 'Elhan', 'aminelhan@gmail.com', 'test123', '082169878787', NULL, '', ''),
+('U0012', 'Orang', 'Baru', 'orang@gmail.com', 'test123', '08111161866', NULL, '', 'default-avatar.png');
 
 --
 -- Triggers `users`
@@ -728,7 +770,15 @@ INSERT INTO `users_seq` (`id`) VALUES
 (1),
 (2),
 (3),
-(4);
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10),
+(11),
+(12);
 
 --
 -- Indexes for dumped tables
@@ -747,6 +797,12 @@ ALTER TABLE `item`
   ADD PRIMARY KEY (`item_id`),
   ADD KEY `item_user_id_foreign` (`user_id`),
   ADD KEY `category` (`category`);
+
+--
+-- Indexes for table `item_image`
+--
+ALTER TABLE `item_image`
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- Indexes for table `item_seq`
@@ -788,13 +844,13 @@ ALTER TABLE `users_seq`
 -- AUTO_INCREMENT for table `item_seq`
 --
 ALTER TABLE `item_seq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users_seq`
 --
 ALTER TABLE `users_seq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
@@ -806,6 +862,12 @@ ALTER TABLE `users_seq`
 ALTER TABLE `item`
   ADD CONSTRAINT `item_category_foreign` FOREIGN KEY (`category`) REFERENCES `categories` (`category_id`),
   ADD CONSTRAINT `item_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `item_image`
+--
+ALTER TABLE `item_image`
+  ADD CONSTRAINT `item_image_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `regencies`
